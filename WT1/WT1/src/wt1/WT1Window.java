@@ -898,9 +898,9 @@ public class WT1Window extends javax.swing.JFrame {
 
             JTextField customerField = new JTextField();
             setting.fill = GridBagConstraints.HORIZONTAL;
-            setting.gridx = 1;
+            setting.gridx = 0;
             setting.gridy = 3;
-            setting.ipadx = 100;
+            setting.ipadx = 200;
             buttonPanel.add(customerField,setting);
             
 
@@ -928,6 +928,19 @@ public class WT1Window extends javax.swing.JFrame {
                         
                         customers.editCustomer(customerList.getSelectedIndex(), customerField.getText());
                         model.setElementAt(customerField.getText(), customerList.getSelectedIndex());
+                        String[] allCustomers = customers.getCustomers();
+                        jComboBox1.setModel(new DefaultComboBoxModel<>(allCustomers));
+                    } catch (IOException ex) {
+                        Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+            addButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        customers.addNewCustomer(customerField.getText());
+                        model.addElement(customerField.getText());
                         String[] allCustomers = customers.getCustomers();
                         jComboBox1.setModel(new DefaultComboBoxModel<>(allCustomers));
                     } catch (IOException ex) {
