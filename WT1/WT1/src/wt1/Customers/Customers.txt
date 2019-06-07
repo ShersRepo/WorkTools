@@ -1,2 +1,1 @@
-Text 1, Text 2, Text 3,new customer,
-tfyfghfghfgh, 
+ Customer 3,   Customer 1, 

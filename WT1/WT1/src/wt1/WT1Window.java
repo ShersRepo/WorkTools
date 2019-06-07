@@ -5,8 +5,15 @@
  */
 package wt1;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Dialog;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
@@ -14,11 +21,21 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import wt1.Customers.Customers;
 import wt1.Descriptions.Descriptions;
+import javax.swing.BoxLayout;
 
 /**
  *
@@ -37,19 +54,21 @@ public class WT1Window extends javax.swing.JFrame {
         jButton2.setVisible(false);
         
         String[] allCustomers = new Customers().getCustomers();
-        //allCustomers = new Customers().sortArrayToMostRecent(allCustomers);
+        allCustomers = new Customers().sortArrayToMostRecent(allCustomers);
         String[] allDescriptions = new Descriptions().getDescriptions();
         
         jComboBox1.setModel(new DefaultComboBoxModel<>(allCustomers));
         jComboBox2.setModel(new DefaultComboBoxModel<>(allDescriptions));
-        String master = location.getMasterFile();  
+        String master = masterLocation.getLocationFile();  
+        String internalLocation = internalJob.getLocationFile();
         jLabel6.setText("File will save in "+ master);
+        jLabel10.setText("Default Location : "+ internalLocation);
         jLabel5.setText("");
         jCheckBox8.setSelected(true);
         jRadioButton1.setSelected(true);
         jRadioButton1.doClick();
-        jCheckBox7.doClick();
         jLabel8.setText("");
+        jLabel9.setText("");
         System.out.println(master);
     }
     
@@ -87,7 +106,6 @@ public class WT1Window extends javax.swing.JFrame {
         jRadioButton3 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
         jRadioButton1 = new javax.swing.JRadioButton();
-        button1 = new java.awt.Button();
         jCheckBox6 = new javax.swing.JCheckBox();
         jCheckBox5 = new javax.swing.JCheckBox();
         jCheckBox4 = new javax.swing.JCheckBox();
@@ -104,10 +122,18 @@ public class WT1Window extends javax.swing.JFrame {
         jTextField2 = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel8 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        jButton6 = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        jButton7 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -197,14 +223,6 @@ public class WT1Window extends javax.swing.JFrame {
             }
         });
 
-        button1.setLabel("Create Folder");
-        button1.setName("Create Job Folder"); // NOI18N
-        button1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button1ActionPerformed(evt);
-            }
-        });
-
         jCheckBox6.setText("Proofs");
         jCheckBox6.setName("Proofs"); // NOI18N
 
@@ -245,7 +263,6 @@ public class WT1Window extends javax.swing.JFrame {
 
         jLabel4.setText("Select subfolders to create");
 
-        jButton2.setActionCommand("");
         jButton2.setLabel("Open Folder");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -256,7 +273,7 @@ public class WT1Window extends javax.swing.JFrame {
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel5.setText("File saved here : ");
 
-        jButton4.setText("Select Location");
+        jButton4.setText("Select Location & Create");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -277,6 +294,40 @@ public class WT1Window extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
         jLabel8.setText("jLabel8");
 
+        jButton3.setText("Select Folder");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setText("Default Folder");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
+        jLabel9.setText("jLabel8");
+
+        jButton6.setText("Create Folder");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
+        jLabel10.setText("jLabel8");
+
+        jButton7.setText("Create");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
         jMenu2.setText("Preferences");
 
         jMenuItem3.setText("Add Customer");
@@ -295,6 +346,22 @@ public class WT1Window extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem5);
 
+        jMenuItem4.setText("Set Internal Job Default Location");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem4);
+
+        jMenuItem6.setText("Manage Customers");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem6);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -304,38 +371,15 @@ public class WT1Window extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox1)
-                    .addComponent(jCheckBox7)
-                    .addComponent(jCheckBox2)
-                    .addComponent(jCheckBox3)
-                    .addComponent(jCheckBox4)
-                    .addComponent(jCheckBox5)
-                    .addComponent(jCheckBox6)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBox8))
-                    .addComponent(jButton2))
-                .addGap(29, 29, 29))
-            .addComponent(jSeparator1)
-            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
+                        .addGap(27, 27, 27)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(2, 2, 2)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(12, 12, 12)
-                                        .addComponent(jLabel2))
-                                    .addComponent(jLabel3))
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel2))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -354,30 +398,71 @@ public class WT1Window extends javax.swing.JFrame {
                                 .addGap(16, 16, 16)
                                 .addComponent(jRadioButton2)
                                 .addGap(18, 18, 18)
-                                .addComponent(jRadioButton3)))
-                        .addGap(0, 348, Short.MAX_VALUE))
+                                .addComponent(jRadioButton3))
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(72, 72, 72)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton5)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCheckBox1)
+                            .addComponent(jCheckBox7)
+                            .addComponent(jCheckBox2)
+                            .addComponent(jCheckBox3)
+                            .addComponent(jCheckBox4)
+                            .addComponent(jCheckBox5)
+                            .addComponent(jCheckBox6)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(106, 106, 106))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jCheckBox8))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(61, 61, 61)
+                                .addComponent(jButton2)))
+                        .addGap(76, 76, 76))))
+            .addComponent(jSeparator1)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton4)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButton4)))
+                                .addGap(0, 0, Short.MAX_VALUE))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
                         .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(22, 22, 22)
                         .addComponent(jCheckBox7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBox1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jCheckBox1)
+                            .addComponent(jLabel6))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jCheckBox2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -389,16 +474,20 @@ public class WT1Window extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jCheckBox6)
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton6)
                             .addComponent(jCheckBox8))
-                        .addGap(29, 29, 29)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5)))
+                            .addComponent(jLabel5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(19, 19, 19)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(67, 67, 67)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -419,18 +508,21 @@ public class WT1Window extends javax.swing.JFrame {
                             .addComponent(jRadioButton2)
                             .addComponent(jRadioButton1)
                             .addComponent(jRadioButton3))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel10)
+                .addGap(3, 3, 3)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton4)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
-                .addGap(33, 33, 33))
+                    .addComponent(jButton7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel8)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel9)
+                .addGap(23, 23, 23))
         );
-
-        button1.getAccessibleContext().setAccessibleName("master+\"\\\\\"+folder");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -447,8 +539,14 @@ public class WT1Window extends javax.swing.JFrame {
             customer.addNewCustomer(newCustomer);
             JOptionPane.showMessageDialog(this, newCustomer + " has been added");
             jLabel5.setText("New Customer Added");
+                try {
+                    String[] allCustomers = customer.getCustomers();
+                    jComboBox1.setModel(new DefaultComboBoxModel<>(allCustomers));
+                } catch (IOException ex) {
+                    Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, "Customer List could not be loaded", ex);
+                }
             } else if(newCustomer == null){
-                
+                JOptionPane.showMessageDialog(this, "You must enter a customer name");
             }
         }    
     }//GEN-LAST:event_jMenuItem3ActionPerformed
@@ -462,13 +560,11 @@ public class WT1Window extends javax.swing.JFrame {
         if (selectedFile == JFileChooser.APPROVE_OPTION){
             newLocation = fileChooser.getSelectedFile().toString();
         }
-        location.setMasterFile(newLocation);
+        masterLocation.setLocationFile(newLocation);
         try {
-            jLabel6.setText("File will save in "+ location.getMasterFile());
+            jLabel6.setText("File will save in "+ masterLocation.getLocationFile());
             jLabel5.setText("Default Location has changed");
             
-            
-            // TODO add your handling code here:
         } catch (IOException ex) {
             Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -480,16 +576,24 @@ public class WT1Window extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String descriptionToAdd = textField1.getText();
-        Descriptions description = new Descriptions();
-        int cancel = JOptionPane.showConfirmDialog(jMenuItem1, "You are adding "+descriptionToAdd+", are you sure?","Adding --> "+descriptionToAdd,
-            JOptionPane.YES_NO_OPTION);
-        if(cancel == 1){
-
-        } else if (cancel == 0){
-            description.addNewDescription(descriptionToAdd);
-            JOptionPane.showMessageDialog(this, descriptionToAdd + " has been added");
-            jLabel5.setText("New Description Added");
-        }
+        if(!descriptionToAdd.isEmpty()){
+            Descriptions description = new Descriptions();
+            int cancel = JOptionPane.showConfirmDialog(jMenuItem1, "You are adding "+descriptionToAdd+", are you sure?","Adding --> "+descriptionToAdd,
+                JOptionPane.YES_NO_OPTION);
+            if(cancel == 1){
+            } else if (cancel == 0){
+                description.addNewDescription(descriptionToAdd);
+                JOptionPane.showMessageDialog(this, descriptionToAdd + " has been added");
+                jLabel5.setText("New Description Added");
+                try {
+                    String[] allDescriptions = new Descriptions().getDescriptions();
+                    jComboBox2.setModel(new DefaultComboBoxModel<>(allDescriptions));
+                } catch (IOException ex) {
+                    Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }
+        } else JOptionPane.showMessageDialog(this, "You must enter a description to add to the system");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void textField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textField1ActionPerformed
@@ -531,13 +635,13 @@ public class WT1Window extends javax.swing.JFrame {
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
         jRadioButton1.setActionCommand("Plan");
-        jCheckBox1.setSelected(true);
-        jCheckBox2.setSelected(true);
-        jCheckBox3.setSelected(true);
-        jCheckBox4.setSelected(true);
-        jCheckBox5.setSelected(true);
+        jCheckBox1.setSelected(false);
+        jCheckBox2.setSelected(false);
+        jCheckBox3.setSelected(false);
+        jCheckBox4.setSelected(false);
+        jCheckBox5.setSelected(false);
         jCheckBox6.setSelected(true);
-        jCheckBox7.setSelected(true);
+        jCheckBox7.setSelected(false);
         
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
@@ -573,115 +677,9 @@ public class WT1Window extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
-    private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
-        try {
-            master = location.getMasterFile();
-            String jobNo = jTextField1.getText();
-            String customer = (String) jComboBox1.getSelectedItem();
-            String descriptionSelection = (String) jComboBox2.getSelectedItem();
-            String description;
-            if(descriptionSelection.equals("Other")){
-                description = textField1.getText();
-            } else description = (String) jComboBox2.getSelectedItem();
-            String type = buttonGroup1.getSelection().getActionCommand();
-            String folder = jobNo + "_" + customer + "_" + description + "_" + type;
-            folderOpener = folder;
-            File parentLocation = new File(master+"\\"+folder);
-                if(!parentLocation.exists()){
-                    parentLocation.mkdir();
-                    if(jCheckBox1.isSelected()){
-                        File newFile = new File(master+"\\"+folder+"\\"+jCheckBox1.getName());
-                            newFile.mkdir();
-                        }
-                        if(jCheckBox2.isSelected()){
-                            File newFile = new File(master+"\\"+folder+"\\"+jCheckBox2.getName());
-                                newFile.mkdir();
-                            }
-                            if(jCheckBox3.isSelected()){
-                                File newFile = new File(master+"\\"+folder+"\\"+jCheckBox3.getName());
-                                    newFile.mkdir();
-                                }
-                                if(jCheckBox4.isSelected()){
-                                    File newFile = new File(master+"\\"+folder+"\\"+jCheckBox4.getName());
-                                        newFile.mkdir();
-                                    }
-                                    if(jCheckBox5.isSelected()){
-                                        File newFile = new File(master+"\\"+folder+"\\"+jCheckBox5.getName());
-                                            newFile.mkdir();
-                                        }
-                                        if(jCheckBox6.isSelected()){
-                                            File newFile = new File(master+"\\"+folder+"\\"+jCheckBox6.getName());
-                                                newFile.mkdir();
-                                                jButton2.setVisible(true);
-                                                jLabel5.setText(folder);
-                                            }
-                                            JOptionPane.showMessageDialog(this, folder + " has been saved");
-                                        }else JOptionPane.showMessageDialog(this, "Job Already Exists");
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
-        if (jCheckBox8.isSelected()){
-            try {
-            String fileLocation = location.getMasterFile();
-            File fileToOpen = new File(fileLocation+"\\"+folderOpener);
-                Desktop desktopViewer = null;
-                if(Desktop.isDesktopSupported()){
-                    desktopViewer = Desktop.getDesktop();
-                    try {
-                        desktopViewer.open(fileToOpen);
-                    } catch (IOException ex) {
-                        Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, "Could not open file", ex);
-                    }
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-                                    /*JFileChooser fileChooser = new JFileChooser();
-                                    String master="";
-                                    fileChooser.setDialogTitle("Work Tool directory");
-                                    fileChooser.setFileSelectionMode((JFileChooser.DIRECTORIES_ONLY));
-                                    int selectedFile = fileChooser.showOpenDialog(this);
-                                    if (selectedFile == JFileChooser.APPROVE_OPTION){
-                                        master = fileChooser.getSelectedFile().toString();
-                                    }
-                                    System.out.println(master);
-                                    String masterFile = "C:\\Users\\sher-\\Documents\\Projects\\WT1\\"+master;
-
-                                    String jobNo = JOptionPane.showInputDialog(this,"Type job number");
-                                    Object[] customerList = {"customer 1","customer 2", "customer 3"};
-                                    String customer = (String) JOptionPane.showInputDialog(this, "Type customer name","customers",JOptionPane.PLAIN_MESSAGE,null,customerList,"Select a customer");
-                                    Object[] descriptions = {"leaflet","brochure", "booklet", "letter"};
-                                    String description = (String) JOptionPane.showInputDialog(this,"Select the job description","descriptions",JOptionPane.PLAIN_MESSAGE,null,descriptions,"Select description");
-                                    Object[] types = {"Plan", "SUV", "Cut"};
-                                    String type = (String) JOptionPane.showInputDialog(this,"Select the type","types",JOptionPane.PLAIN_MESSAGE,null,types,"Select type");
-                                    String folder = jobNo + "_" + customer + "_" + description + "_" + type;
-                                    File file = new File(master+"\\"+folder);
-                                        if(!file.exists()){
-                                            file.mkdir();
-                                            JList subFolders = new JList(new String[] {"Customer", "Working Files", "Printed Form", "Do Not Use", "Guides", "Books"});
-                                            JOptionPane.showMessageDialog(this, subFolders,"Choose the subfolders", JOptionPane.PLAIN_MESSAGE);
-                                            int selectedFolders[] = subFolders.getSelectedIndices();
-                                            for(int i = 0; i < selectedFolders.length; i++){
-                                                FolderCheck renamer = new FolderCheck();
-                                                String folderName = renamer.getFolder(selectedFolders[i]);
-                                                File newFile = new File(master+"\\"+folder+"\\"+folderName);
-                                                    newFile.mkdir();
-                                                    System.out.println("Created Sub Folder -> "+ newFile);
-                                                }
-                                            }else {
-                                                JOptionPane.showMessageDialog(this, "Job Already Exists");
-                                            }
-
-                                            //JLabel1 instruction = "Click Contol HOLd to create sub folder for Job bag";
-
-                                            */
-    }//GEN-LAST:event_button1ActionPerformed
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
-            String fileLocation = location.getMasterFile();
+            String fileLocation = masterLocation.getLocationFile();
             File fileToOpen = new File(fileLocation+"\\"+folderOpener);
                 Desktop desktopViewer = null;
                 if(Desktop.isDesktopSupported()){
@@ -716,9 +714,250 @@ public class WT1Window extends javax.swing.JFrame {
             newInternalJob.mkdir();
             workingFiles.mkdir();
             doNotUseFile.mkdir();
-            jLabel8.setText("Internal Job "+internalJobLocation+" saved");
+            jLabel8.setText("Internal Job "+internalJobLocation+" saved in");
+            jLabel9.setText("File saved here : " + newLocation);
         } 
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Choose Save Location");
+        fileChooser.setFileSelectionMode((JFileChooser.DIRECTORIES_ONLY));
+        int selectedFile = fileChooser.showOpenDialog(this);
+        if (selectedFile == JFileChooser.APPROVE_OPTION){
+            master = fileChooser.getSelectedFile().toString();
+            jLabel6.setText("File will save in " + master);
+        } 
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        try { 
+            master = masterLocation.getLocationFile();
+            jLabel6.setText("File will save in " + master);
+        } catch (IOException ex) {
+            Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, "Master File has not been set correctly", ex);
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+                try {
+            master = masterLocation.getLocationFile();
+            String jobNo = jTextField1.getText();
+            String customer = (String) jComboBox1.getSelectedItem();
+            String descriptionSelection = (String) jComboBox2.getSelectedItem();
+            String description;
+            if(descriptionSelection.equals("Other")){
+                description = textField1.getText();
+            } else description = (String) jComboBox2.getSelectedItem();
+            String type = buttonGroup1.getSelection().getActionCommand();
+            String folder = jobNo + "_" + customer + "_" + description + "_" + type;
+            folderOpener = folder;
+            File parentLocation = new File(master+"\\"+folder);
+                if(!parentLocation.exists()){
+                    parentLocation.mkdir();
+                    if(jCheckBox1.isSelected()){
+                    File newFile = new File(master+"\\"+folder+"\\"+jCheckBox1.getName());
+                        newFile.mkdir();
+                    }
+                    if(jCheckBox2.isSelected()){
+                        File newFile = new File(master+"\\"+folder+"\\"+jCheckBox2.getName());
+                            newFile.mkdir();
+                        }
+                    if(jCheckBox3.isSelected()){
+                        File newFile = new File(master+"\\"+folder+"\\"+jCheckBox3.getName());
+                            newFile.mkdir();
+                        }
+                    if(jCheckBox4.isSelected()){
+                        File newFile = new File(master+"\\"+folder+"\\"+jCheckBox4.getName());
+                            newFile.mkdir();
+                        }
+                    if(jCheckBox5.isSelected()){
+                        File newFile = new File(master+"\\"+folder+"\\"+jCheckBox5.getName());
+                            newFile.mkdir();
+                        }
+                    if(jCheckBox6.isSelected()){
+                        File newFile = new File(master+"\\"+folder+"\\"+jCheckBox6.getName());
+                            newFile.mkdir();
+                            jButton2.setVisible(true);
+                            jLabel5.setText(folder);
+                        }
+                    JOptionPane.showMessageDialog(this, folder + " has been saved");
+                        }else JOptionPane.showMessageDialog(this, "Job Already Exists");
+                    } catch (IOException ex) {
+                        Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                if (jCheckBox8.isSelected()){
+                try {
+                    String fileLocation = masterLocation.getLocationFile();
+                    File fileToOpen = new File(fileLocation+"\\"+folderOpener);
+                        Desktop desktopViewer = null;
+                        if(Desktop.isDesktopSupported()){
+                            desktopViewer = Desktop.getDesktop();
+                            try {
+                                desktopViewer.open(fileToOpen);
+                            } catch (IOException ex) {
+                                Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, "Could not open file", ex);
+                            }
+                        }
+                    } catch (IOException ex) {
+                        Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        
+            String jobName = jTextField2.getText();
+            if(!jobName.isEmpty()){
+                try {
+                    internalLocation = internalJob.getLocationFile();
+                    File newInternalJob = new File(internalLocation+"\\"+jobName);
+                    File workingFiles = new File(internalLocation+"\\"+jobName+"\\Working Files");
+                    File doNotUseFile = new File(internalLocation+"\\"+jobName+"\\Do Not Use");
+                    if(!newInternalJob.exists()){
+                        newInternalJob.mkdir();
+                        workingFiles.mkdir();
+                        jLabel8.setText("Internal Job "+jobName+" saved");
+                        jLabel9.setText("File saved here : " + internalLocation);
+                        doNotUseFile.mkdir();
+                    } else if(newInternalJob.exists()){
+                        JOptionPane.showMessageDialog(this, "Job Already Exists");
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, "Could not locate the default location", ex);
+                }
+            } else JOptionPane.showMessageDialog(this, "You must enter an Internal Job Name");
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Internal Job Default Directory Selector");
+        fileChooser.setFileSelectionMode((JFileChooser.DIRECTORIES_ONLY));
+        int selectedFile = fileChooser.showOpenDialog(this);
+        String newLocation = "";
+        if (selectedFile == JFileChooser.APPROVE_OPTION){
+            newLocation = fileChooser.getSelectedFile().toString();
+            internalJob.setLocationFile(newLocation);
+            try {
+            jLabel10.setText("File will save in "+ internalJob.getLocationFile());
+            jLabel5.setText("Default Location has changed");
+            } catch (IOException ex) {
+                Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, "Could not find the internal job file location", ex);
+            }
+        }
+        
+
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        Customers customers = new Customers();
+        try {
+            JDialog frame = new JDialog();
+            JSplitPane splitter = new JSplitPane();
+            splitter.setResizeWeight(0.7);
+            JPanel buttonPanel = new JPanel();
+            GridBagConstraints setting = new GridBagConstraints();
+            frame.setSize(450,350);
+            frame.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+            frame.add(splitter);
+            buttonPanel.setLayout(new GridBagLayout());
+            
+            JList customerList = new JList(customers.getCustomers());
+            DefaultListModel<String> model = new DefaultListModel<>();
+            for(String customer : customers.getCustomers()){
+                model.addElement(customer);
+            }
+            customerList.setModel(model);
+            customerList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            customerList.setLayoutOrientation(JList.VERTICAL_WRAP);
+            JScrollPane scrollList = new JScrollPane(customerList);
+            
+            
+            
+            
+            JButton addButton = new JButton();
+            addButton.setText("Add");
+            setting.fill = GridBagConstraints.HORIZONTAL;
+            setting.gridx = 1;
+            setting.gridy = 0;
+            buttonPanel.add(addButton,setting);
+              
+            JButton editButton = new JButton();
+            editButton.setText("Edit");
+            setting.fill = GridBagConstraints.HORIZONTAL;
+            setting.gridx = 0;
+            setting.gridy = 0;
+            buttonPanel.add(editButton,setting);
+            
+            JButton deleteButton = new JButton();
+            deleteButton.setText("Delete");
+            setting.fill = GridBagConstraints.HORIZONTAL;
+            setting.gridx = 2;
+            setting.gridy = 0;
+            buttonPanel.add(deleteButton, setting);
+
+            JTextField customerField = new JTextField();
+            setting.fill = GridBagConstraints.HORIZONTAL;
+            setting.gridx = 1;
+            setting.gridy = 3;
+            setting.ipadx = 100;
+            buttonPanel.add(customerField,setting);
+            
+
+            splitter.setLeftComponent(scrollList);
+            splitter.setRightComponent(buttonPanel);
+            
+            customerField.setSize(500, 25);
+            deleteButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        customers.removeCustomer(customerList.getSelectedIndex());
+                        model.removeElementAt(customerList.getSelectedIndex());
+                        String[] allCustomers = customers.getCustomers();
+                        jComboBox1.setModel(new DefaultComboBoxModel<>(allCustomers));
+                    } catch (IOException ex) {
+                        Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+            editButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        
+                        customers.editCustomer(customerList.getSelectedIndex(), customerField.getText());
+                        model.setElementAt(customerField.getText(), customerList.getSelectedIndex());
+                        String[] allCustomers = customers.getCustomers();
+                        jComboBox1.setModel(new DefaultComboBoxModel<>(allCustomers));
+                    } catch (IOException ex) {
+                        Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+            
+            frame.setVisible(rootPaneCheckingEnabled);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            this.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    frame.setModalityType(Dialog.ModalityType.DOCUMENT_MODAL);
+                    e.getWindow().dispose();
+                    frame.dispose();
+                }
+            });
+            
+            
+            
+        } catch (IOException ex) {
+            Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+        
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -758,17 +997,22 @@ public class WT1Window extends javax.swing.JFrame {
             }
         });
     }
-    MasterFile location = new MasterFile();
+    MasterFile masterLocation = new MasterFile();
+    InternalJobLocation internalJob = new InternalJobLocation();
     String master = "";
+    String internalLocation = "";
     String folderOpener = "";
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.awt.Button button1;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.ButtonGroup buttonGroup3;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
@@ -781,6 +1025,7 @@ public class WT1Window extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -788,12 +1033,15 @@ public class WT1Window extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;

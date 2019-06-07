@@ -20,19 +20,19 @@ import wt1.Customers.Customers;
  *
  * @author sher-
  */
-public class MasterFile implements LocationClass{
-    private String masterFile;
+public class InternalJobLocation implements LocationClass{
+        private String locationFile;
     
-    public MasterFile() throws IOException{
+    public InternalJobLocation() throws IOException{
         //try{ BufferedReader reader = new BufferedReader(new FileReader("Files\\\\MasterLocation.txt")); /*This File (line 27) should be enabled for testing and line 28 commented out */
-        try{ BufferedReader reader = new BufferedReader(new FileReader("src\\wt1\\MasterLocation.txt"));  /*This File (line 28) should be enabled for testing and line 27 commented out */
+        try{ BufferedReader reader = new BufferedReader(new FileReader("src\\wt1\\InternalJobLocation.txt"));  /*This File (line 28) should be enabled for testing and line 27 commented out */
         String line;
         StringBuilder location = new StringBuilder();
         while((line= reader.readLine()) != null){
             location.append(line);
         }
         String masterFile = location.toString();
-        this.masterFile = masterFile;
+        this.locationFile = masterFile;
         }   catch (FileNotFoundException ex) {
         Logger.getLogger(Customers.class.getName()).log(Level.SEVERE, null, ex);
         }     
@@ -42,7 +42,7 @@ public class MasterFile implements LocationClass{
     public void setLocationFile(String location){
             try {
                 //FileWriter fileWriter = new FileWriter("Files\\MasterLocation.txt");/*This File (line 42) should be enabled for testing and line 43 commented out */
-                FileWriter fileWriter = new FileWriter("src\\wt1\\MasterLocation.txt"); /*This File (line 43) should be enabled for testing and line 42 commented out */
+                FileWriter fileWriter = new FileWriter("src\\wt1\\InternalJobLocation.txt"); /*This File (line 43) should be enabled for testing and line 42 commented out */
                 BufferedWriter bf = new BufferedWriter(fileWriter);
                 PrintWriter updater = new PrintWriter(bf);
                 String lineToWrite = location;
@@ -52,7 +52,7 @@ public class MasterFile implements LocationClass{
             } catch (IOException ex) {
                 Logger.getLogger(Customers.class.getName()).log(Level.SEVERE, "Could not set file", ex);
             }
-        this.masterFile = location;
+        this.locationFile = location;
     }
     
     
@@ -60,7 +60,7 @@ public class MasterFile implements LocationClass{
     public String getLocationFile() throws IOException{
         try {
             //BufferedReader reader = new BufferedReader(new FileReader("Files\\MasterLocation.txt")); /*This File (line 59) should be enabled for testing and line 60 commented out */
-            BufferedReader reader = new BufferedReader(new FileReader("src\\wt1\\MasterLocation.txt")); /*This File (line 60) should be enabled for testing and line 59 commented out */
+            BufferedReader reader = new BufferedReader(new FileReader("src\\wt1\\InternalJobLocation.txt")); /*This File (line 60) should be enabled for testing and line 59 commented out */
             String line;
             StringBuilder location = new StringBuilder();
             while((line= reader.readLine()) != null){
@@ -70,12 +70,6 @@ public class MasterFile implements LocationClass{
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Customers.class.getName()).log(Level.SEVERE, null, ex);
         }
-         return masterFile;
+         return locationFile;
     }
-    
-    
-    
-    
-    
-    
 }
