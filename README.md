@@ -1,5 +1,6 @@
 # WorkTools
 File directory creator utility
+
 This tool was designed for a printing firm to simplify the process of creating file directory system. It implements a text file system as a way of tracking user settings such as saved customers and descriptions for jobs. These are initialised on startup of the application automatically. 
 On initial start up default file locations need to be set up. This can be done with the following steps:
 
