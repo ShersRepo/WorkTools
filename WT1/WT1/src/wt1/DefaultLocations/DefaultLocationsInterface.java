@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package wt1;
+package wt1.DefaultLocations;
 
+import wt1.*;
 import java.io.IOException;
 
 /**
  *
  * @author sher-
  */
-public interface LocationClass {
+public interface DefaultLocationsInterface {
     
     public abstract void setLocationFile(String location);
     

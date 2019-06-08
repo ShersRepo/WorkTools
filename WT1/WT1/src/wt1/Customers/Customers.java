@@ -77,13 +77,13 @@ public class Customers {
         //File customersFile = new File("Files\\Customers.txt");    /* This File (line 29) should be enabled for deployment, and line 30 commented*/
         File customersFile = new File("src\\wt1\\Customers\\Customers.txt"); /*This File (line 30) should be enabled for testing and line 29 commented out */
         List<String> listCustomers = new ArrayList<String>(Arrays.asList(this.getCustomers()));
-        String customer = listCustomers.get(index);
+        String customer = listCustomers.get(index).trim();
         customer = customer + ",";
         BufferedReader reader = new BufferedReader(new FileReader(customersFile)); /*This File (line 56) should be enabled for testing and line 55 commented out */
         String line;
         StringBuilder resultCustomers = new StringBuilder();
         while((line= reader.readLine()) != null){
-            line = line.replaceAll(customer, replaceWith + ", ");
+            line = line.trim().replaceAll(customer, replaceWith + ",");
             resultCustomers.append(line);
         }
         FileWriter fileWriter = null;

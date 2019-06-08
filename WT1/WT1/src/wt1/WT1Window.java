@@ -35,6 +35,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import wt1.Customers.Customers;
 import wt1.Descriptions.Descriptions;
+import wt1.DefaultLocations.*;
 import javax.swing.BoxLayout;
 
 /**
@@ -59,8 +60,8 @@ public class WT1Window extends javax.swing.JFrame {
         
         jComboBox1.setModel(new DefaultComboBoxModel<>(allCustomers));
         jComboBox2.setModel(new DefaultComboBoxModel<>(allDescriptions));
-        String master = masterLocation.getLocationFile();  
-        String internalLocation = internalJob.getLocationFile();
+        String master = printDepartmentDefault.getLocationFile();  
+        String internalLocation = internalDepartmentDefault.getLocationFile();
         jLabel6.setText("File will save in "+ master);
         jLabel10.setText("Default Location : "+ internalLocation);
         jLabel5.setText("");
@@ -130,7 +131,6 @@ public class WT1Window extends javax.swing.JFrame {
         jButton7 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
@@ -330,14 +330,6 @@ public class WT1Window extends javax.swing.JFrame {
 
         jMenu2.setText("Preferences");
 
-        jMenuItem3.setText("Add Customer");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem3);
-
         jMenuItem5.setText("Set Default Location");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -527,30 +519,6 @@ public class WT1Window extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        wt1.Customers.Customers customer = new Customers();
-            String newCustomer = JOptionPane.showInputDialog(jMenuItem1, "Add a new Customer");
-            if(newCustomer != null){
-            int cancel = JOptionPane.showConfirmDialog(jMenuItem1, "Are you sure you want to add this customer","Adding --> "+newCustomer,
-            JOptionPane.YES_NO_OPTION);
-            if(cancel == 1){
-            JOptionPane.showMessageDialog(jMenuItem1, "Cancelled");
-            } else if (cancel == 0){
-            customer.addNewCustomer(newCustomer);
-            JOptionPane.showMessageDialog(this, newCustomer + " has been added");
-            jLabel5.setText("New Customer Added");
-                try {
-                    String[] allCustomers = customer.getCustomers();
-                    jComboBox1.setModel(new DefaultComboBoxModel<>(allCustomers));
-                } catch (IOException ex) {
-                    Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, "Customer List could not be loaded", ex);
-                }
-            } else if(newCustomer == null){
-                JOptionPane.showMessageDialog(this, "You must enter a customer name");
-            }
-        }    
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
-
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Default Directory Selector");
@@ -560,9 +528,9 @@ public class WT1Window extends javax.swing.JFrame {
         if (selectedFile == JFileChooser.APPROVE_OPTION){
             newLocation = fileChooser.getSelectedFile().toString();
         }
-        masterLocation.setLocationFile(newLocation);
+        printDepartmentDefault.setLocationFile(newLocation);
         try {
-            jLabel6.setText("File will save in "+ masterLocation.getLocationFile());
+            jLabel6.setText("File will save in "+ printDepartmentDefault.getLocationFile());
             jLabel5.setText("Default Location has changed");
             
         } catch (IOException ex) {
@@ -679,7 +647,7 @@ public class WT1Window extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
-            String fileLocation = masterLocation.getLocationFile();
+            String fileLocation = printDepartmentDefault.getLocationFile();
             File fileToOpen = new File(fileLocation+"\\"+folderOpener);
                 Desktop desktopViewer = null;
                 if(Desktop.isDesktopSupported()){
@@ -716,6 +684,7 @@ public class WT1Window extends javax.swing.JFrame {
             doNotUseFile.mkdir();
             jLabel8.setText("Internal Job "+internalJobLocation+" saved in");
             jLabel9.setText("File saved here : " + newLocation);
+            jTextField2.setText("");
         } 
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -725,82 +694,73 @@ public class WT1Window extends javax.swing.JFrame {
         fileChooser.setFileSelectionMode((JFileChooser.DIRECTORIES_ONLY));
         int selectedFile = fileChooser.showOpenDialog(this);
         if (selectedFile == JFileChooser.APPROVE_OPTION){
-            master = fileChooser.getSelectedFile().toString();
-            jLabel6.setText("File will save in " + master);
+            printLocation = fileChooser.getSelectedFile().toString();
+            jLabel6.setText("File will save in " + printLocation);
         } 
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         try { 
-            master = masterLocation.getLocationFile();
-            jLabel6.setText("File will save in " + master);
+            printLocation = printDepartmentDefault.getLocationFile();
+            jLabel6.setText("File will save in " + printLocation);
         } catch (IOException ex) {
             Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, "Master File has not been set correctly", ex);
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-                try {
-            master = masterLocation.getLocationFile();
-            String jobNo = jTextField1.getText();
-            String customer = (String) jComboBox1.getSelectedItem();
-            String descriptionSelection = (String) jComboBox2.getSelectedItem();
-            String description;
-            if(descriptionSelection.equals("Other")){
-                description = textField1.getText();
-            } else description = (String) jComboBox2.getSelectedItem();
-            String type = buttonGroup1.getSelection().getActionCommand();
-            String folder = jobNo + "_" + customer + "_" + description + "_" + type;
-            folderOpener = folder;
-            File parentLocation = new File(master+"\\"+folder);
-                if(!parentLocation.exists()){
-                    parentLocation.mkdir();
-                    if(jCheckBox1.isSelected()){
-                    File newFile = new File(master+"\\"+folder+"\\"+jCheckBox1.getName());
-                        newFile.mkdir();
-                    }
-                    if(jCheckBox2.isSelected()){
-                        File newFile = new File(master+"\\"+folder+"\\"+jCheckBox2.getName());
-                            newFile.mkdir();
-                        }
-                    if(jCheckBox3.isSelected()){
-                        File newFile = new File(master+"\\"+folder+"\\"+jCheckBox3.getName());
-                            newFile.mkdir();
-                        }
-                    if(jCheckBox4.isSelected()){
-                        File newFile = new File(master+"\\"+folder+"\\"+jCheckBox4.getName());
-                            newFile.mkdir();
-                        }
-                    if(jCheckBox5.isSelected()){
-                        File newFile = new File(master+"\\"+folder+"\\"+jCheckBox5.getName());
-                            newFile.mkdir();
-                        }
-                    if(jCheckBox6.isSelected()){
-                        File newFile = new File(master+"\\"+folder+"\\"+jCheckBox6.getName());
-                            newFile.mkdir();
-                            jButton2.setVisible(true);
-                            jLabel5.setText(folder);
-                        }
-                    JOptionPane.showMessageDialog(this, folder + " has been saved");
-                        }else JOptionPane.showMessageDialog(this, "Job Already Exists");
-                    } catch (IOException ex) {
-                        Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+        String jobNo = jTextField1.getText();
+        String customer = (String) jComboBox1.getSelectedItem();
+        String descriptionSelection = (String) jComboBox2.getSelectedItem();
+        String description;
+        if(descriptionSelection.equals("Other")){
+            description = textField1.getText();
+        } else description = (String) jComboBox2.getSelectedItem();
+        String type = buttonGroup1.getSelection().getActionCommand();
+        String folder = jobNo + "_" + customer + "_" + description + "_" + type;
+        folderOpener = folder;
+        File parentLocation = new File(printLocation+"\\"+folder);
+        if(!parentLocation.exists()){
+            parentLocation.mkdir();
+            if(jCheckBox1.isSelected()){
+                File newFile = new File(printLocation+"\\"+folder+"\\"+jCheckBox1.getName());
+                newFile.mkdir();
+            }
+            if(jCheckBox2.isSelected()){
+                File newFile = new File(printLocation+"\\"+folder+"\\"+jCheckBox2.getName());
+                newFile.mkdir();
+            }
+            if(jCheckBox3.isSelected()){
+                File newFile = new File(printLocation+"\\"+folder+"\\"+jCheckBox3.getName());
+                newFile.mkdir();
+            }
+            if(jCheckBox4.isSelected()){
+                File newFile = new File(printLocation+"\\"+folder+"\\"+jCheckBox4.getName());
+                newFile.mkdir();
+            }
+            if(jCheckBox5.isSelected()){
+                File newFile = new File(printLocation+"\\"+folder+"\\"+jCheckBox5.getName());
+                newFile.mkdir();
+            }
+            if(jCheckBox6.isSelected()){
+                File newFile = new File(printLocation+"\\"+folder+"\\"+jCheckBox6.getName());
+                newFile.mkdir();
+                jButton2.setVisible(true);
+                jLabel5.setText(folder);
+            }
+            JOptionPane.showMessageDialog(this, folder + " has been saved");
+            jTextField1.setText("");
+            jRadioButton1.doClick();
+        }else JOptionPane.showMessageDialog(this, "Job Already Exists");
                 if (jCheckBox8.isSelected()){
-                try {
-                    String fileLocation = masterLocation.getLocationFile();
-                    File fileToOpen = new File(fileLocation+"\\"+folderOpener);
-                        Desktop desktopViewer = null;
-                        if(Desktop.isDesktopSupported()){
-                            desktopViewer = Desktop.getDesktop();
-                            try {
-                                desktopViewer.open(fileToOpen);
-                            } catch (IOException ex) {
-                                Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, "Could not open file", ex);
-                            }
+                    Desktop desktopViewer = null;
+                    if(Desktop.isDesktopSupported()){
+                        desktopViewer = Desktop.getDesktop();
+                        try {
+                            desktopViewer.open(parentLocation);
+                        } catch (IOException ex) {
+                            Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, "Could not open file", ex);
                         }
-                    } catch (IOException ex) {
-                        Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
     }//GEN-LAST:event_jButton6ActionPerformed
@@ -810,7 +770,7 @@ public class WT1Window extends javax.swing.JFrame {
             String jobName = jTextField2.getText();
             if(!jobName.isEmpty()){
                 try {
-                    internalLocation = internalJob.getLocationFile();
+                    internalLocation = internalDepartmentDefault.getLocationFile();
                     File newInternalJob = new File(internalLocation+"\\"+jobName);
                     File workingFiles = new File(internalLocation+"\\"+jobName+"\\Working Files");
                     File doNotUseFile = new File(internalLocation+"\\"+jobName+"\\Do Not Use");
@@ -820,6 +780,8 @@ public class WT1Window extends javax.swing.JFrame {
                         jLabel8.setText("Internal Job "+jobName+" saved");
                         jLabel9.setText("File saved here : " + internalLocation);
                         doNotUseFile.mkdir();
+                        jTextField2.setText("");
+                        
                     } else if(newInternalJob.exists()){
                         JOptionPane.showMessageDialog(this, "Job Already Exists");
                     }
@@ -837,9 +799,9 @@ public class WT1Window extends javax.swing.JFrame {
         String newLocation = "";
         if (selectedFile == JFileChooser.APPROVE_OPTION){
             newLocation = fileChooser.getSelectedFile().toString();
-            internalJob.setLocationFile(newLocation);
+            internalDepartmentDefault.setLocationFile(newLocation);
             try {
-            jLabel10.setText("File will save in "+ internalJob.getLocationFile());
+            jLabel10.setText("File will save in "+ internalDepartmentDefault.getLocationFile());
             jLabel5.setText("Default Location has changed");
             } catch (IOException ex) {
                 Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, "Could not find the internal job file location", ex);
@@ -911,41 +873,50 @@ public class WT1Window extends javax.swing.JFrame {
             deleteButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    try {
-                        customers.removeCustomer(customerList.getSelectedIndex());
-                        model.removeElementAt(customerList.getSelectedIndex());
-                        String[] allCustomers = customers.getCustomers();
-                        jComboBox1.setModel(new DefaultComboBoxModel<>(allCustomers));
-                    } catch (IOException ex) {
-                        Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    if(customerList.getSelectedIndex() != -1){
+                        try {
+                            customers.removeCustomer(customerList.getSelectedIndex());
+                            model.removeElementAt(customerList.getSelectedIndex());
+                            String[] allCustomers = customers.getCustomers();
+                            jComboBox1.setModel(new DefaultComboBoxModel<>(allCustomers));
+                        } catch (IOException ex) {
+                            Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, null, ex);
+                        } 
+                    } else JOptionPane.showMessageDialog(frame, "You must select a customer from the list and enter a name", "Customer not selected", JOptionPane.ERROR_MESSAGE);
                 }
             });
             editButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    if(customerList.getSelectedIndex() != -1 && (!customerField.getText().isEmpty())){
                     try {
-                        
+                        System.out.println(customerList.getSelectedIndex());
                         customers.editCustomer(customerList.getSelectedIndex(), customerField.getText());
                         model.setElementAt(customerField.getText(), customerList.getSelectedIndex());
                         String[] allCustomers = customers.getCustomers();
                         jComboBox1.setModel(new DefaultComboBoxModel<>(allCustomers));
-                    } catch (IOException ex) {
-                        Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, null, ex);
+                        customerField.setText("");
+                        } catch (IOException ex) {
+                            Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
+                    else JOptionPane.showMessageDialog(frame, "You must select a customer from the list and enter a name", "Customer not selected", JOptionPane.ERROR_MESSAGE);
                 }
             });
             addButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    try {
-                        customers.addNewCustomer(customerField.getText());
-                        model.addElement(customerField.getText());
-                        String[] allCustomers = customers.getCustomers();
-                        jComboBox1.setModel(new DefaultComboBoxModel<>(allCustomers));
-                    } catch (IOException ex) {
-                        Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    if((!customerField.getText().isEmpty())){
+                        try {
+                            customers.addNewCustomer(customerField.getText());
+                            model.addElement(customerField.getText());
+                            String[] allCustomers = customers.getCustomers();
+                            jComboBox1.setModel(new DefaultComboBoxModel<>(allCustomers));
+                            customerField.setText("");
+                        } catch (IOException ex) {
+                            Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } else JOptionPane.showMessageDialog(frame, "You must enter a name for the customer", "Invalid Name Entered", JOptionPane.ERROR_MESSAGE);
                 }
             });
             
@@ -1010,9 +981,12 @@ public class WT1Window extends javax.swing.JFrame {
             }
         });
     }
-    MasterFile masterLocation = new MasterFile();
-    InternalJobLocation internalJob = new InternalJobLocation();
-    String master = "";
+   // MasterFile masterLocation = new MasterFile();
+    //InternalJobLocation internalJob = new InternalJobLocation();
+    DefaultLocator printDepartmentDefault = new DefaultLocator(1);
+    DefaultLocator internalDepartmentDefault = new DefaultLocator(2);
+    
+    String printLocation = "";
     String internalLocation = "";
     String folderOpener = "";
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1051,7 +1025,6 @@ public class WT1Window extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
