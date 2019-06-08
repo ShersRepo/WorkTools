@@ -13,11 +13,14 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Window;
+import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -37,6 +40,7 @@ import wt1.Customers.Customers;
 import wt1.Descriptions.Descriptions;
 import wt1.DefaultLocations.*;
 import javax.swing.BoxLayout;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -60,22 +64,31 @@ public class WT1Window extends javax.swing.JFrame {
         
         jComboBox1.setModel(new DefaultComboBoxModel<>(allCustomers));
         jComboBox2.setModel(new DefaultComboBoxModel<>(allDescriptions));
-        String master = printDepartmentDefault.getLocationFile();  
+        String printLocation = printDepartmentDefault.getLocationFile();  
         String internalLocation = internalDepartmentDefault.getLocationFile();
-        jLabel6.setText("File will save in "+ master);
+        jLabel6.setText("File will save in "+ printLocation);
         jLabel10.setText("Default Location : "+ internalLocation);
         jLabel5.setText("");
+        jButton5.doClick();
         jCheckBox8.setSelected(true);
         jRadioButton1.setSelected(true);
         jRadioButton1.doClick();
         jLabel8.setText("");
         jLabel9.setText("");
-        System.out.println(master);
+        System.out.println(printLocation);
+        enableDragAndDrop(printLocation);
     }
     
     public void setMyComponents(){
         jLabel5.setForeground(Color.blue);
     }
+    
+    public void enableDragAndDrop(String path){
+        FileTransfer dragTransfer = new FileTransfer(path);
+        DropTarget dropTarget = new DropTarget(jList1, dragTransfer);
+    }
+
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -129,6 +142,9 @@ public class WT1Window extends javax.swing.JFrame {
         jButton6 = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         jButton7 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
@@ -328,6 +344,21 @@ public class WT1Window extends javax.swing.JFrame {
             }
         });
 
+        jScrollPane2.setViewportView(jList1);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
         jMenu2.setText("Preferences");
 
         jMenuItem5.setText("Set Default Location");
@@ -397,7 +428,7 @@ public class WT1Window extends javax.swing.JFrame {
                         .addComponent(jRadioButton2)
                         .addGap(18, 18, 18)
                         .addComponent(jRadioButton3)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                .addGap(111, 111, 111)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -409,18 +440,17 @@ public class WT1Window extends javax.swing.JFrame {
                             .addComponent(jCheckBox5)
                             .addComponent(jCheckBox6)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(106, 106, 106))
+                        .addGap(30, 30, 30))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jCheckBox8))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(61, 61, 61)
-                                .addComponent(jButton2)))
-                        .addGap(76, 76, 76))))
+                        .addComponent(jButton6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jCheckBox8))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(61, 61, 61)
+                        .addComponent(jButton2)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jSeparator1)
             .addGroup(layout.createSequentialGroup()
                 .addGap(26, 26, 26)
@@ -445,60 +475,64 @@ public class WT1Window extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(21, 21, 21)
+                            .addComponent(jLabel4)
+                            .addGap(22, 22, 22)
+                            .addComponent(jCheckBox7)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jCheckBox1)
+                                .addComponent(jLabel6))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jCheckBox2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jCheckBox3)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jCheckBox4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jCheckBox5)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jCheckBox6)
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jButton6)
+                                .addComponent(jCheckBox8))
+                            .addGap(28, 28, 28)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel5)))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(19, 19, 19)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(67, 67, 67)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel1)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2))
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel3)
+                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jButton1)
+                                .addComponent(textField1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jRadioButton2)
+                                .addComponent(jRadioButton1)
+                                .addComponent(jRadioButton3))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(jLabel4)
-                        .addGap(22, 22, 22)
-                        .addComponent(jCheckBox7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jCheckBox1)
-                            .addComponent(jLabel6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBox2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBox3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBox4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBox5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBox6)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton6)
-                            .addComponent(jCheckBox8))
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(67, 67, 67)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addComponent(textField1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jRadioButton2)
-                            .addComponent(jRadioButton1)
-                            .addComponent(jRadioButton3))))
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -704,7 +738,7 @@ public class WT1Window extends javax.swing.JFrame {
             printLocation = printDepartmentDefault.getLocationFile();
             jLabel6.setText("File will save in " + printLocation);
         } catch (IOException ex) {
-            Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, "Master File has not been set correctly", ex);
+            Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, "Print Location File has not been set correctly", ex);
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -722,35 +756,52 @@ public class WT1Window extends javax.swing.JFrame {
         File parentLocation = new File(printLocation+"\\"+folder);
         if(!parentLocation.exists()){
             parentLocation.mkdir();
+            List<File> fileDirectories = new ArrayList<File>();
             if(jCheckBox1.isSelected()){
                 File newFile = new File(printLocation+"\\"+folder+"\\"+jCheckBox1.getName());
                 newFile.mkdir();
+                fileDirectories.add(newFile);
             }
             if(jCheckBox2.isSelected()){
                 File newFile = new File(printLocation+"\\"+folder+"\\"+jCheckBox2.getName());
                 newFile.mkdir();
+                fileDirectories.add(newFile);
             }
             if(jCheckBox3.isSelected()){
                 File newFile = new File(printLocation+"\\"+folder+"\\"+jCheckBox3.getName());
                 newFile.mkdir();
+                fileDirectories.add(newFile);
             }
             if(jCheckBox4.isSelected()){
                 File newFile = new File(printLocation+"\\"+folder+"\\"+jCheckBox4.getName());
                 newFile.mkdir();
+                fileDirectories.add(newFile);
             }
             if(jCheckBox5.isSelected()){
                 File newFile = new File(printLocation+"\\"+folder+"\\"+jCheckBox5.getName());
                 newFile.mkdir();
+                fileDirectories.add(newFile);
             }
             if(jCheckBox6.isSelected()){
                 File newFile = new File(printLocation+"\\"+folder+"\\"+jCheckBox6.getName());
                 newFile.mkdir();
+                fileDirectories.add(newFile);
                 jButton2.setVisible(true);
                 jLabel5.setText(folder);
             }
             JOptionPane.showMessageDialog(this, folder + " has been saved");
             jTextField1.setText("");
             jRadioButton1.doClick();
+            
+            DefaultListModel<String> model = new DefaultListModel<>();
+            for(File filesToAdd : fileDirectories){
+                model.addElement(filesToAdd.getName());
+            }
+            jList1.setDragEnabled(true);
+            enableDragAndDrop(printLocation);
+            
+
+            
         }else JOptionPane.showMessageDialog(this, "Job Already Exists");
                 if (jCheckBox8.isSelected()){
                     Desktop desktopViewer = null;
@@ -808,9 +859,11 @@ public class WT1Window extends javax.swing.JFrame {
             }
         }
         
-
     }//GEN-LAST:event_jMenuItem4ActionPerformed
-
+ 
+    
+    
+    
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         Customers customers = new Customers();
         try {
@@ -833,9 +886,6 @@ public class WT1Window extends javax.swing.JFrame {
             customerList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             customerList.setLayoutOrientation(JList.VERTICAL_WRAP);
             JScrollPane scrollList = new JScrollPane(customerList);
-            
-            
-            
             
             JButton addButton = new JButton();
             addButton.setText("Add");
@@ -932,15 +982,9 @@ public class WT1Window extends javax.swing.JFrame {
                 }
             });
             
-            
-            
         } catch (IOException ex) {
             Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        
-        
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     /**
@@ -981,8 +1025,6 @@ public class WT1Window extends javax.swing.JFrame {
             }
         });
     }
-   // MasterFile masterLocation = new MasterFile();
-    //InternalJobLocation internalJob = new InternalJobLocation();
     DefaultLocator printDepartmentDefault = new DefaultLocator(1);
     DefaultLocator internalDepartmentDefault = new DefaultLocator(2);
     
@@ -1021,6 +1063,7 @@ public class WT1Window extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JList<String> jList1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
@@ -1028,11 +1071,13 @@ public class WT1Window extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
