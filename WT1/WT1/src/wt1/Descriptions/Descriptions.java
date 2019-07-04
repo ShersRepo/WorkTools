@@ -26,8 +26,8 @@ public class Descriptions {
     
     
     public void addNewDescription(String description){
-        //File customersFile = new File("Files\\Descriptions.txt");/*This File (line 29) should be enabled for testing and line 30 commented out */
-        File customersFile = new File("src\\wt1\\Descriptions\\Descriptions.txt"); /*This File (line 30) should be enabled for testing and line 29 commented out */
+        File customersFile = new File("Files\\Descriptions.txt");/*This File (line 29) should be enabled for testing and line 30 commented out */
+        //File customersFile = new File("src\\wt1\\Descriptions\\Descriptions.txt"); /*This File (line 30) should be enabled for testing and line 29 commented out */
         if(customersFile.exists()){
             FileWriter fileWriter = null;
             try {
@@ -52,8 +52,8 @@ public class Descriptions {
     
         public String[] getDescriptions() throws IOException{
         try {
-            //BufferedReader reader = new BufferedReader(new FileReader("Files\\Descriptions.txt")); /*This File (line 55) should be enabled for testing and line 56 commented out */
-            BufferedReader reader = new BufferedReader(new FileReader("src\\wt1\\Descriptions\\Descriptions.txt")); /*This File (line 56) should be enabled for testing and line 55 commented out */
+            BufferedReader reader = new BufferedReader(new FileReader("Files\\Descriptions.txt")); /*This File (line 55) should be enabled for testing and line 56 commented out */
+            //BufferedReader reader = new BufferedReader(new FileReader("src\\wt1\\Descriptions\\Descriptions.txt")); /*This File (line 56) should be enabled for testing and line 55 commented out */
             String line;
             StringBuilder resultDescriptions = new StringBuilder();
             while((line= reader.readLine()) != null){

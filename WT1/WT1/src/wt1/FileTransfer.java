@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.SwingUtilities;
 import wt1.DefaultLocations.DefaultLocator;
 
@@ -60,6 +61,7 @@ public class FileTransfer implements DropTargetListener {
 
     @Override
     public void dragOver(DropTargetDragEvent dtde) {
+        System.out.println(locationToDrop);
     }
 
     @Override

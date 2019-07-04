@@ -29,9 +29,12 @@ public class DefaultLocator implements DefaultLocationsInterface{
         //try{ BufferedReader reader = new BufferedReader(new FileReader("Files\\\\MasterLocation.txt")); /*This File (line 27) should be enabled for testing and line 28 commented out */
         try{ 
             if(setting == 1){
-               path = "src\\wt1\\DefaultLocations\\MasterLocation.txt"; 
+               //path = "src\\wt1\\DefaultLocations\\MasterLocation.txt"; 
+               path = "Files\\MasterLocation.txt"; 
             } else if (setting == 2){
-               path = "src\\wt1\\DefaultLocations\\InternalJobLocation.txt";
+               //path = "src\\wt1\\DefaultLocations\\InternalJobLocation.txt";
+               path = "Files\\InternalJobLocation.txt";
+               
             }
             BufferedReader reader = new BufferedReader(new FileReader(path));  /*This File (line 28) should be enabled for testing and line 27 commented out */
             String line;
