@@ -16,3 +16,7 @@ appropriate forms as required.
 
 4. Once all conditions are satisfied, click on create folder or select folder to save the folder
 directories.
+
+5. The newly created files are shown in an explorer menu, where files can be dragged and dropped into the selected files.
+
+6. Repeat as desired
