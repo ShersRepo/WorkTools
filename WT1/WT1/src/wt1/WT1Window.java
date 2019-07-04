@@ -97,20 +97,12 @@ public class WT1Window extends javax.swing.JFrame {
         jRadioButton1.doClick();
         jLabel8.setText("");
         jLabel9.setText("");
-        //enableDragAndDrop(printLocation);
+
     }
     
     public void setMyComponents(){
         //jLabel5.setForeground(Color.blue);
     }
-    
-    @SuppressWarnings("empty-statement")
-    public void enableDragAndDrop(String path){
-        FileTransfer dragTransfer = new FileTransfer(path);
-        DropTarget dropTarget = new DropTarget(jList1, dragTransfer);
-        
-    }
-
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -168,6 +160,7 @@ public class WT1Window extends javax.swing.JFrame {
         jList1 = new javax.swing.JList<>();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
@@ -189,6 +182,7 @@ public class WT1Window extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextArea1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Work Tools Utilities - ShersRepo");
         setPreferredSize(new java.awt.Dimension(1000, 701));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -320,7 +314,7 @@ public class WT1Window extends javax.swing.JFrame {
         getContentPane().add(jCheckBox7, new org.netbeans.lib.awtextra.AbsoluteConstraints(477, 117, -1, -1));
 
         jCheckBox8.setText("Auto Open");
-        getContentPane().add(jCheckBox8, new org.netbeans.lib.awtextra.AbsoluteConstraints(582, 294, -1, -1));
+        getContentPane().add(jCheckBox8, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 300, -1, -1));
 
         jLabel4.setText("Select subfolders to create");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(477, 85, 149, -1));
@@ -404,6 +398,7 @@ public class WT1Window extends javax.swing.JFrame {
         });
         getContentPane().add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 490, 87, 39));
 
+        jList1.setFixedCellWidth(255);
         jScrollPane2.setViewportView(jList1);
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(699, 85, -1, 344));
@@ -412,8 +407,9 @@ public class WT1Window extends javax.swing.JFrame {
         jLabel11.setText("Work Tools");
         getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 520, 222, -1));
 
-        jLabel12.setText("V 1.3.0");
+        jLabel12.setText("V 1.4.1");
         getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 550, 54, -1));
+        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 60, 170, -1));
 
         jMenu2.setText("Preferences");
 
@@ -657,6 +653,7 @@ public class WT1Window extends javax.swing.JFrame {
         if(!parentLocation.exists()){
             parentLocation.mkdir();
             List<File> fileDirectories = new ArrayList<File>();
+            fileDirectories.clear();
             if(jCheckBox1.isSelected()){
                 File newFile = new File(printLocation+"\\"+folder+"\\"+jCheckBox1.getName());
                 newFile.mkdir();
@@ -689,109 +686,32 @@ public class WT1Window extends javax.swing.JFrame {
             }
             jButton2.setVisible(true);
             jLabel5.setText("File is saved here -> " + printLocation+"\\"+folder);
+            dragLocation = printLocation+"\\"+folder;
             JOptionPane.showMessageDialog(this, folder + " has been saved");
             jTextField1.setText("");
             jRadioButton1.doClick();
             DefaultListModel<String> model = new DefaultListModel<>();
             Map<String, File> filePaths = new HashMap<String, File>();
-            model.clear();
             filePaths.clear();
             for(File filesToAdd : fileDirectories){
                 model.addElement(filesToAdd.getName());
                 filePaths.put(filesToAdd.getName(), filesToAdd);
             }
+            fileDirectories = null;
             jList1.setFont(jList1.getFont().deriveFont(18.0f));
             jList1.setFixedCellHeight(36);
             jList1.setDropMode(DropMode.ON);
             jList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            System.out.println(model);
             jList1.setModel(model);
             jList1.setEnabled(true);
-            jList1.setDragEnabled(true);
-            jList1.setSelectedIndex(0);
-            jList1.requestFocusInWindow();
-            jList1.grabFocus();
-            DropTargetListener ft = new DropTargetListener() {
-                @Override
-                public void dragEnter(DropTargetDragEvent dtde) {
-                    jList1.setSelectedIndex(0);
-                }
+            
 
-                @Override
-                public void dragOver(DropTargetDragEvent dtde) {
-                    Point position = new Point(dtde.getLocation());
-                    jList1.setSelectedIndex(jList1.locationToIndex(position));
-                }
-
-                @Override
-                public void dropActionChanged(DropTargetDragEvent dtde) {
-                }
-
-                @Override
-                public void dragExit(DropTargetEvent dte) {
-                }
-
-                @Override
-                public void drop(DropTargetDropEvent dtde) {
-                    InputStream input = null;
-                    OutputStream output = null;
-                    Transferable transferable = dtde.getTransferable();
-                    if(dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)){
-                        dtde.acceptDrop(dtde.getDropAction());
-                        try{
-                            List<File> transferData = (List<File>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
-                            if(transferData != null && transferData.size()> 0){
-                                for(File files : transferData){
-                                    System.out.println(files.getAbsolutePath());
-                                    System.out.println(jList1.getSelectedValue());
-                                    DefaultLocator dl = new DefaultLocator(1);
-                                    dl.getLocationFile();
-                                    input = new FileInputStream(files.getAbsoluteFile());
-                                    String filename = files.getName();
-                                    output = new FileOutputStream(filePaths.get(jList1.getSelectedValue()).getAbsolutePath()+"\\"+filename);
-                                    System.out.println(output);
-                                    byte[] buffer = new byte[1024];
-                                    int length;
-                                    //copy the file content in bytes 
-                                    while ((length = input.read(buffer)) > 0){
-                                        output.write(buffer, 0, length);
-                                    }
-                                    input.close();
-                                    output.close();
-                                }
-                                dtde.dropComplete(true);
-                            }
-                        } catch (UnsupportedFlavorException ex) {
-                            Logger.getLogger(FileTransfer.class.getName()).log(Level.SEVERE, null, ex);
-                        } catch (IOException ex) {
-                            Logger.getLogger(FileTransfer.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else dtde.rejectDrop();
-                }
-            };
             jList1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
                 String filePath = "";
                 @Override
                 public void valueChanged(ListSelectionEvent event) {
-//                    jList1.addMouseMotionListener(new MouseAdapter(){
-//                        public void mouseMoved(MouseEvent e){
-//                            Point point = new Point(e.getX(),e.getY());
-//                            int index = jList1.locationToIndex(point);
-//                            jList1.setSelectedValue(index ,true);
-//                            if(index != -1){
-//                                filePath = model.elementAt(index);
-//                            }
-//                            System.out.println(filePath);
-//                            enableDragAndDrop(filePaths.get(filePath).getAbsolutePath());
-//                        }
-//                    });
-//                }
-
-                 /*   if(event.getValueIsAdjusting()){
-                        filePath = jList1.getSelectedValue();
-                        enableDragAndDrop(filePaths.get(filePath).getAbsolutePath());
-                    } else enableDragAndDrop(filePaths.get(jList1.getSelectedValue()).getAbsolutePath());    */
                 DropTarget drag = new DropTarget(jList1, ft);
+                drag = null;
             }
             });
             
@@ -1030,6 +950,71 @@ public class WT1Window extends javax.swing.JFrame {
     String printLocation = "";
     String internalLocation = "";
     String folderOpener = "";
+    String dragLocation = "";
+    
+                DropTargetListener ft = new DropTargetListener() {
+                @Override
+                public void dragEnter(DropTargetDragEvent dtde) {
+                    jList1.setDragEnabled(true);
+                    jList1.setSelectedIndex(1);
+                    
+                }
+
+                @Override
+                public void dragOver(DropTargetDragEvent dtde) {
+                    Point position = new Point(dtde.getLocation());
+                    jList1.setSelectedIndex(jList1.locationToIndex(position));
+                    jLabel13.setText("Drop files into a folder");
+                }
+
+                @Override
+                public void dropActionChanged(DropTargetDragEvent dtde) {
+                }
+
+                @Override
+                public void dragExit(DropTargetEvent dte) {
+                }
+
+                @Override
+                public void drop(DropTargetDropEvent dtde) {
+                    InputStream input = null;
+                    OutputStream output = null;
+                    Transferable transferable = dtde.getTransferable();
+                    if(dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)){
+                        dtde.acceptDrop(dtde.getDropAction());
+                         try{
+                            List<File> transferData = (List<File>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
+                            if(transferData != null && transferData.size()> 0){
+                                for(File files : transferData){
+                                    input = new FileInputStream(files.getAbsoluteFile());
+                                    String filename = files.getName();
+                                    output = new FileOutputStream(dragLocation+"\\"+jList1.getSelectedValue()+"\\"+filename);
+                                    byte[] buffer = new byte[1024];
+                                    int length;
+                                    //copy the file content in bytes 
+                                    while ((length = input.read(buffer)) > 0){
+                                        output.write(buffer, 0, length);
+                                    }
+                                    input.close();
+                                    output.close();
+                                }
+                                jLabel13.setText("File(s) Copied Successfully");
+                                dtde.dropComplete(true);
+                            }
+                        }   
+                        catch (UnsupportedFlavorException ex) {
+                            Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, null, ex);
+                        } 
+                        catch (IOException ex) {
+                            Logger.getLogger(WT1Window.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    else dtde.rejectDrop();
+                    jLabel3.setText("File(s) Failed to copy");
+                };
+            };
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
@@ -1056,6 +1041,7 @@ public class WT1Window extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
